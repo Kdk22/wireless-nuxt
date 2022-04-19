@@ -24,28 +24,81 @@ export default {
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
 
+  router: {
+  // middleware: ['auth']
+},
+
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     // https://go.nuxtjs.dev/eslint
-    ['@nuxtjs/dotenv', { filename: '.env.' + process.env.ENV }],
+    ['@nuxtjs/dotenv', { filename: `.env.${process.env.ENV}` }],
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
   ],
+
+  auth: {
+    strategies: {
+
+      // local: {
+      //   _scheme: 'oauth2',
+      //   authorization_endpoint: 'http://127.0.0.1:8000/token-auth/',
+      //   userinfo_endpoint: false,
+      //   access_type: 'offline',
+      //   access_token_endpoint: 'http://127.0.0.1:8000/detail/me/',
+      //   response_type: 'code',
+      //   token_type: 'Bearer',
+      //   token_key: 'access_token',
+      // },
+      local: {
+         token: {
+        property: 'token',
+        global: true,
+           maxAge: 1800,
+        // required: true,
+        // type: 'Bearer'
+      },
+        endpoints: {
+          login: {
+            url: '/token-auth/',
+            method: 'post',
+            propertyName: 'token'
+          },
+          user: {
+            property: 'user',
+            url: '/users/detail/me/',
+            method: 'get',
+            propertyName: false
+          },
+          logout: false
+        },
+        tokenType: 'JWT'
+      }
+    },
+    redirect: {
+      login: '/login/',
+      logout: '/login/',
+      callback: '/login',
+      home: '/login/'
+    },
+    rewriteRedirects: false,
+    fullPathRedirect: false,
+    localStorage: false
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    // '@nuxtjs/auth',
+    '@nuxtjs/auth-next',
     '@nuxtjs/pwa',
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+
   },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa

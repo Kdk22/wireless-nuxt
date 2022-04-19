@@ -45,7 +45,7 @@
           class="authentication-field-class  "
           type="password"
           placeholder="Password"
-          @keyup.enter="login"
+          @keyup.enter="$router.push('/login')"
         >
         <InputValidation :error-text="formValidator.getError('password')" />
            </div>
@@ -53,7 +53,7 @@
           :title="'Sign in'"
           :button-class="'authenticationButtonClass group relative w-full my-4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'"
           :button-title-class="'text-center '"
-          @click="login"
+          @click="$router.push('/login')"
         />
         <div class="text-center text-lg default-font ">
           <Button
@@ -84,7 +84,7 @@ import InputValidation from '@/components/Common/InputValidation.vue'
 import FormValidator from '@/utils/form_validator/index.js'
 
 export default {
-  name: "IndexPage",
+  name: "LoginUser",
    components: {
      Button,
      InputValidation

@@ -11,7 +11,7 @@ export default function ({ $axios, redirect }) {
       redirect('/500')
     }
     if (code === 403) {
-      redirect('/account/login')
+      redirect('/index')
     }
   })
 }
