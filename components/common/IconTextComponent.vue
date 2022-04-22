@@ -16,8 +16,13 @@
 </template>
 
 <script>
+import IconBase from './IconBase.vue'
+// import PeopleToFollowList from '~/components/EventFeed/PeopleToFollowList'
+
 export default {
   name: 'IconTextComponent',
+      components: {  IconBase },
+
   props: {
     iconPath: {
       type: String,

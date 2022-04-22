@@ -1,3 +1,4 @@
+<script src="../../utils/form_validator/index.js"></script>
 <template>
  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
   <div class="max-w-md w-full space-y-8">
@@ -45,7 +46,7 @@
           class="authentication-field-class  "
           type="password"
           placeholder="Password"
-          @keyup.enter="$router.push('/login')"
+          @keyup.enter="login"
         >
         <InputValidation :error-text="formValidator.getError('password')" />
            </div>
@@ -53,7 +54,7 @@
           :title="'Sign in'"
           :button-class="'authenticationButtonClass group relative w-full my-4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'"
           :button-title-class="'text-center '"
-          @click="$router.push('/login')"
+          @click="login"
         />
         <div class="text-center text-lg default-font ">
           <Button
@@ -81,8 +82,8 @@ import Button from '@/components/Common/Button.vue'
 // import IconBase from './IconBase'
 import InputValidation from '@/components/Common/InputValidation.vue'
 // import ImageField from '@/components/ImageField'
-import FormValidator from '@/utils/form_validator/index.js'
-
+// import FormValidator from '~/utils/form_validator/index.js'
+import FormValidator from '../../utils/form_validator/index.js'
 export default {
   name: "LoginUser",
    components: {
@@ -97,7 +98,47 @@ export default {
 
     }
   },
-  methods: {}
+  methods: {
+     login () {
+      const dataToPost = {
+        email: this.email,
+        password: this.password
+      }
+     this.$auth
+        .loginWith('local', { data: dataToPost })
+        .then((response) => {
+           this.$store.dispatch('showSnackbar', {
+              text: 'Please complete your registration.',
+              class: 'bg-blue-500 text-white'
+            })
+          console.log(response)
+          this.$router.push('/home')
+          // if (res.data.user.registration_stage === 'stage-3') {
+          //   this.$store.dispatch('showSnackbar', { text: `Hi ${res.data.user.full_name} !  Welcome to Bizevent`, class: 'bg-blue-500 text-white' })
+          //   this.$route.push('/')
+          // } else if (res.data.user.registration_stage === 'stage-2') {
+          //   this.sendEmail()
+          //
+          //   this.$store.dispatch('showSnackbar', { text: 'Please verify your email address.', class: 'bg-blue-500 text-white' })
+          // } else {
+          //   this.$router.push({
+          //     name: 'register-full-name',
+          //     params: { email: res.data.user.email }
+          //   })
+          //
+          // }
+        })
+        .catch((error) => {
+          this.formValidator.setError(error.response.data)
+          // this.$store.dispatch('showSnackbar', { text: `${error.response.data.non_field_errors}. Please make sure your email or password is correct`, class: 'bg-red-500 text-white' })
+
+          // this.setNotifyMessage({
+          //   message: 'Username or Password doesnot match.',
+          //   color: 'red',
+          // })
+        })
+    },
+  }
 }
 </script>
 

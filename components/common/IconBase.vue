@@ -11,7 +11,9 @@
   </svg>
 </template>
 <script>
+
 export default {
+  name: 'IconBase',
   props: {
     iconName: {
       type: String,

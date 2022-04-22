@@ -75,9 +75,9 @@
 </template>
 
 <script>
-import UserInfo from '~/components/EventFeed/UserInfo.vue'
+import UserInfo from '../../components/EventFeed/UserInfo.vue'
 // import PeopleToFollowList from '~/components/EventFeed/PeopleToFollowList'
-import EventContent from '~/components/EventFeed/EventContent.vue'
+import EventContent from '../../components/EventFeed/EventContent.vue'
 
 export default {
   name: 'NoticeBoard',
@@ -99,9 +99,9 @@ export default {
 
   },
   created () {
-    this.getPostData(this)
-    this.getRecommendedFollowList()
-    this.getFollowers()
+    // this.getPostData(this)
+    // this.getRecommendedFollowList()
+    // this.getFollowers()
   },
   mounted () {
     // const wrapper = document.getElementById('scroll-element')

@@ -36,7 +36,6 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
   ],
-
   auth: {
     strategies: {
 
@@ -51,28 +50,46 @@ export default {
       //   token_key: 'access_token',
       // },
       local: {
-         token: {
-        property: 'token',
-        global: true,
-           maxAge: 1800,
-        // required: true,
-        // type: 'Bearer'
-      },
-        endpoints: {
-          login: {
-            url: '/token-auth/',
-            method: 'post',
-            propertyName: 'token'
+        scheme: 'refresh',
+        token:
+          {
+              property: 'access_token',
+              required: true,
+              maxAge: 1800,
+              global: true,
+              type: 'Bearer'
+           },
+        user:
+          {
+            property: false, // <--- Default "user"
+            autoFetch: true
           },
-          user: {
-            property: 'user',
-            url: '/users/detail/me/',
-            method: 'get',
-            propertyName: false
+        refreshToken:
+          {
+            property: 'refresh_token',
+            data: 'refresh_token',
+            maxAge: 60 * 60 * 24 * 30
           },
-          logout: false
+
+
+        endpoints:
+          {
+            login:
+              {
+                url: 'api/token/',
+                method: 'post',
+                propertyName: false
+              },
+            user:
+              {
+                url: 'users-detail/me/',
+                method: 'get',
+                propertyName: false
+            },
+            refresh: { url: 'api/token/refresh',
+              method: 'post' },
+            logout: false
         },
-        tokenType: 'JWT'
       }
     },
     redirect: {
@@ -83,7 +100,7 @@ export default {
     },
     rewriteRedirects: false,
     fullPathRedirect: false,
-    localStorage: false
+    localStorage: true
   },
 
   // Modules: https://go.nuxtjs.dev/config-modules

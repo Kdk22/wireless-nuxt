@@ -23,7 +23,7 @@
 import {
   uniTimesCircle
 } from '@/icons'
-import IconBase from '~/components/IconBase'
+import IconBase from '~/components/Common/IconBase.vue'
 export default {
   icons: {
     uniTimesCircle
