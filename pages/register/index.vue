@@ -155,8 +155,8 @@ export default {
     },
 
     postData() {
-      if (this.formData.password === this.confirmPassword && this.formData.password > 7 ) {
-
+      if (this.formData.password === this.confirmPassword && this.formData.password ) {
+console.log("Here in post data")
         this.$axios
           .$post('/detail/', this.formData)
           .then((response) => {
@@ -171,10 +171,10 @@ export default {
           })
           .catch((error) => {
             console.log(error)
-            // this.setNotifyMessage({
-            //   message: 'Username or Password doesnot match.',
-            //   color: 'red',
-            // })
+            this.setNotifyMessage({
+              message: 'Username or Password doesnot match.',
+              color: 'red',
+            })
           })
       } else {
         this.formValidator.setError({confirmPassword: 'Did not match or must be more that 8 characters.'})
@@ -199,10 +199,10 @@ export default {
         .catch((error) => {
           console.log(error)
           this.formValidator.setError(error.response)
-          // this.setNotifyMessage({
-          //   message: 'Username or Password doesnot match.',
-          //   color: 'red',
-          // })
+          this.$store.({
+            message: 'Username or Password doesnot match.',
+            color: 'red',
+          })
         })
     }
   }

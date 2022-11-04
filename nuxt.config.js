@@ -37,71 +37,92 @@ export default {
     '@nuxtjs/tailwindcss',
   ],
   auth: {
-    strategies: {
-
-      // local: {
-      //   _scheme: 'oauth2',
-      //   authorization_endpoint: 'http://127.0.0.1:8000/token-auth/',
-      //   userinfo_endpoint: false,
-      //   access_type: 'offline',
-      //   access_token_endpoint: 'http://127.0.0.1:8000/detail/me/',
-      //   response_type: 'code',
-      //   token_type: 'Bearer',
-      //   token_key: 'access_token',
-      // },
-      local: {
-        scheme: 'refresh',
-        token:
-          {
-              property: 'access_token',
-              required: true,
-              maxAge: 1800,
-              global: true,
-              type: 'Bearer'
-           },
-        user:
-          {
-            property: false, // <--- Default "user"
-            autoFetch: true
-          },
-        refreshToken:
-          {
-            property: 'refresh_token',
-            data: 'refresh_token',
-            maxAge: 60 * 60 * 24 * 30
-          },
-
-
-        endpoints:
-          {
-            login:
-              {
-                url: 'api/token/',
-                method: 'post',
-                propertyName: false
-              },
-            user:
-              {
-                url: 'users-detail/me/',
-                method: 'get',
-                propertyName: false
-            },
-            refresh: { url: 'api/token/refresh',
-              method: 'post' },
-            logout: false
-        },
+  strategies: {
+    local: {
+      token: {
+        property: 'token',
+        global: true,
+        // required: true,
+        // type: 'Bearer'
+      },
+      user: {
+        property: 'user',
+        // autoFetch: true
+      },
+      endpoints: {
+        login: { url: '/api/auth/login', method: 'post' },
+        logout: { url: '/api/auth/logout', method: 'post' },
+        user: { url: '/api/auth/user', method: 'get' }
       }
-    },
-    redirect: {
-      login: '/login/',
-      logout: '/login/',
-      callback: '/login',
-      home: '/login/'
-    },
-    rewriteRedirects: false,
-    fullPathRedirect: false,
-    localStorage: true
-  },
+    }
+  }
+},
+  // auth: {
+  //   strategies: {
+  //
+  //     // local: {
+  //     //   _scheme: 'oauth2',
+  //     //   authorization_endpoint: 'http://127.0.0.1:8000/token-auth/',
+  //     //   userinfo_endpoint: false,
+  //     //   access_type: 'offline',
+  //     //   access_token_endpoint: 'http://127.0.0.1:8000/detail/me/',
+  //     //   response_type: 'code',
+  //     //   token_type: 'Bearer',
+  //     //   token_key: 'access_token',
+  //     // },
+  //     local: {
+  //       scheme: 'refresh',
+  //       token:
+  //         {
+  //             property: 'access_token',
+  //             required: true,
+  //             maxAge: 1800,
+  //             global: true,
+  //             type: 'Bearer'
+  //          },
+  //       user:
+  //         {
+  //           property: false, // <--- Default "user"
+  //           autoFetch: true
+  //         },
+  //       refreshToken:
+  //         {
+  //           property: 'refresh_token',
+  //           data: 'refresh_token',
+  //           maxAge: 60 * 60 * 24 * 30
+  //         },
+  //
+  //
+  //       endpoints:
+  //         {
+  //           login:
+  //             {
+  //               url: 'api/token/',
+  //               method: 'post',
+  //               propertyName: false
+  //             },
+  //           user:
+  //             {
+  //               url: 'users-detail/me/',
+  //               method: 'get',
+  //               propertyName: false
+  //           },
+  //           refresh: { url: 'api/token/refresh',
+  //             method: 'post' },
+  //           logout: false
+  //       },
+  //     }
+  //   },
+  //   redirect: {
+  //     login: '/login/',
+  //     logout: '/login/',
+  //     callback: '/login',
+  //     home: '/login/'
+  //   },
+  //   rewriteRedirects: false,
+  //   fullPathRedirect: false,
+  //   localStorage: true
+  // },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [

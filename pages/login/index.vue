@@ -54,7 +54,7 @@
           :title="'Sign in'"
           :button-class="'authenticationButtonClass group relative w-full my-4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'"
           :button-title-class="'text-center '"
-          @click="login"
+          @click="login()"
         />
         <div class="text-center text-lg default-font ">
           <Button
@@ -99,45 +99,49 @@ export default {
     }
   },
   methods: {
-     login () {
-      const dataToPost = {
-        email: this.email,
-        password: this.password
-      }
-     this.$auth
-        .loginWith('local', { data: dataToPost })
-        .then((response) => {
-           this.$store.dispatch('showSnackbar', {
-              text: 'Please complete your registration.',
-              class: 'bg-blue-500 text-white'
-            })
-          console.log(response)
-          this.$router.push('/home')
-          // if (res.data.user.registration_stage === 'stage-3') {
-          //   this.$store.dispatch('showSnackbar', { text: `Hi ${res.data.user.full_name} !  Welcome to Bizevent`, class: 'bg-blue-500 text-white' })
-          //   this.$route.push('/')
-          // } else if (res.data.user.registration_stage === 'stage-2') {
-          //   this.sendEmail()
-          //
-          //   this.$store.dispatch('showSnackbar', { text: 'Please verify your email address.', class: 'bg-blue-500 text-white' })
-          // } else {
-          //   this.$router.push({
-          //     name: 'register-full-name',
-          //     params: { email: res.data.user.email }
-          //   })
-          //
-          // }
-        })
-        .catch((error) => {
-          this.formValidator.setError(error.response.data)
-          // this.$store.dispatch('showSnackbar', { text: `${error.response.data.non_field_errors}. Please make sure your email or password is correct`, class: 'bg-red-500 text-white' })
-
-          // this.setNotifyMessage({
-          //   message: 'Username or Password doesnot match.',
-          //   color: 'red',
-          // })
-        })
+    login(){
+      this.$store.dispatch('')
     },
+    // login(){
+    //
+    // },
+    //  login () {
+    //   const dataToPost = {
+    //     email: this.email,
+    //     password: this.password
+    //   }
+    //   this.$store.dispatch('')
+    //  this.$auth
+    //     .loginWith('local', { data: dataToPost })
+    //     .then((response) => {
+    //
+    //       console.log(response)
+    //       this.$router.push('/home')
+    //       // if (res.data.user.registration_stage === 'stage-3') {
+    //       //   this.$store.dispatch('showSnackbar', { text: `Hi ${res.data.user.full_name} !  Welcome to Bizevent`, class: 'bg-blue-500 text-white' })
+    //       //   this.$route.push('/')
+    //       // } else if (res.data.user.registration_stage === 'stage-2') {
+    //       //   this.sendEmail()
+    //       //
+    //       //   this.$store.dispatch('showSnackbar', { text: 'Please verify your email address.', class: 'bg-blue-500 text-white' })
+    //       // } else {
+    //       //   this.$router.push({
+    //       //     name: 'register-full-name',
+    //       //     params: { email: res.data.user.email }
+    //       //   })
+    //       //
+    //       // }
+    //     })
+    //     .catch((error) => {
+    //       this.formValidator.setError(error.response.data)
+    //       // this.$store.dispatch('showSnackbar', { text: `${error.response.data.non_field_errors}. Please make sure your email or password is correct`, class: 'bg-red-500 text-white' })
+    //
+    //       // this.setNotifyMessage({
+    //       //   message: 'Username or Password doesnot match.',
+    //       //   color: 'red',
+    //       // })
+    //     })
+    // },
   }
 }
 </script>

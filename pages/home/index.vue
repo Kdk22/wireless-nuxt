@@ -4,6 +4,8 @@
     <div> User Info is: </div>
     {{ $auth.user }}
 <!--    <NoticeBoard />-->
+    <div> Location Data: </div>
+    {{ locationData }}
   </div>
 </template>
 
@@ -15,6 +17,7 @@ export default {
   // components: { NoticeBoard, Header },
   data () {
     return {
+      locationData: {},
 
     }
   },
@@ -30,6 +33,7 @@ export default {
           //   message: 'Successfully Login. Enjoy Shopping.',
           //   color: 'green',
           // })
+          this.locationData = response
           console.log('data posted', response)
           // self.$router.push('/')
           console.log(response)
