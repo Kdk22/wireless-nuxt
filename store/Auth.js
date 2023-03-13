@@ -1,6 +1,8 @@
+// Auth file is not used. this needs to be removed . Everything is transferred to store/index.js
 export const state = () => ({
     accessToken: null,
-    refreshToken: null
+    refreshToken: null,
+
 });
 
 export const getters = {
@@ -29,14 +31,16 @@ export const mutations = {
 
 
 export const actions = {
+
     async login({ commit, dispatch }, { username, password }) {
         const res = await this.$axios.$post('api/token/', {
             username,
             password
         });
 
-        commit('setTokens', res);
+
         await dispatch('getUser');
+        commit('setTokens', res);
     },
     // async register({ commit, dispatch }, { username, password }) {
     //     const res = await this.$axios.$post('/auth/register', {

@@ -199,10 +199,10 @@ console.log("Here in post data")
         .catch((error) => {
           console.log(error)
           this.formValidator.setError(error.response)
-          this.$store.({
-            message: 'Username or Password doesnot match.',
-            color: 'red',
-          })
+          this.setNotifyMessage({
+              message: 'Username or Password doesnot match.',
+              color: 'red',
+            })
         })
     }
   }

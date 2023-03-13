@@ -36,27 +36,27 @@ export default {
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
   ],
-  auth: {
-  strategies: {
-    local: {
-      token: {
-        property: 'token',
-        global: true,
-        // required: true,
-        // type: 'Bearer'
-      },
-      user: {
-        property: 'user',
-        // autoFetch: true
-      },
-      endpoints: {
-        login: { url: '/api/auth/login', method: 'post' },
-        logout: { url: '/api/auth/logout', method: 'post' },
-        user: { url: '/api/auth/user', method: 'get' }
-      }
-    }
-  }
-},
+//   auth: {
+//   strategies: {
+//     local: {
+//       token: {
+//         property: 'token',
+//         global: true,
+//         // required: true,
+//         // type: 'Bearer'
+//       },
+//       user: {
+//         property: 'user',
+//         // autoFetch: true
+//       },
+//       endpoints: {
+//         login: { url: '/api/auth/login', method: 'post' },
+//         logout: { url: '/api/auth/logout', method: 'post' },
+//         user: { url: '/api/auth/user', method: 'get' }
+//       }
+//     }
+//   }
+// },
   // auth: {
   //   strategies: {
   //
@@ -129,7 +129,7 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/auth-next',
+    // '@nuxtjs/auth-next',
     '@nuxtjs/pwa',
   ],
 

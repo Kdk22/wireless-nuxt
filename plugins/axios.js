@@ -20,12 +20,18 @@ export default function({
     store,
     app: { $axios },
     redirect
-}) {
+})
+{
+   $axios.setBaseURL(process.env.AXIOS_BASE_URL)
+  // $axios.setBaseURL('http://bdipesh08.pythonanywhere.com/api/')
+  $axios.onRequest((config) => {
+    console.log('Making request to ' + config.url)
+  });
     $axios.onRequest((config) => {
         // check if the user is authenticated
-        if (store.state.auth.accessToken) {
+        if (store.state.accessToken) {
             // set the Authorization header using the access token
-            config.headers.Authorization = 'Bearer ' + store.state.auth.accessToken;
+            config.headers.Authorization = 'Bearer ' + store.state.accessToken;
         }
 
         return config;

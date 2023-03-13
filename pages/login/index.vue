@@ -46,7 +46,7 @@
           class="authentication-field-class  "
           type="password"
           placeholder="Password"
-          @keyup.enter="login"
+          @keyup.enter="login()"
         >
         <InputValidation :error-text="formValidator.getError('password')" />
            </div>
@@ -99,10 +99,15 @@ export default {
     }
   },
   methods: {
-    login(){
-      this.$store.dispatch('')
+
+     login(){
+      console.log(this.email)
+       this.$store.dispatch('login', {
+        email: this.email,
+        password: this.password
+      })
     },
-    // login(){
+    // login1(){
     //
     // },
     //  login () {
