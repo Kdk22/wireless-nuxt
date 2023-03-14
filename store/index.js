@@ -28,11 +28,11 @@ export const mutations = {
 
   // for authentication
 
-     setTokens(state, { accessToken, refreshToken = null }) {
-        state.accessToken = accessToken;
+     setTokens(state, { access, refresh = null }) {
+        state.accessToken = access;
 
-        if (refreshToken) {
-            state.refreshToken = refreshToken;
+        if (refresh) {
+            state.refreshToken = refresh;
         }
     },
     setUser(state, user) {
@@ -66,9 +66,8 @@ export const actions = {
             password
         });
 
-
-        await dispatch('getUser');
         commit('setTokens', res);
+        await dispatch('getUser');
     },
 
    async getUser({ commit }) {

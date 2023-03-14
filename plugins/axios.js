@@ -29,6 +29,7 @@ export default function({
   });
     $axios.onRequest((config) => {
         // check if the user is authenticated
+      console.log(store.state.accessToken)
         if (store.state.accessToken) {
             // set the Authorization header using the access token
             config.headers.Authorization = 'Bearer ' + store.state.accessToken;
@@ -41,7 +42,7 @@ export default function({
         const statusCode = error.response ? error.response.status : -1;
 
         if (statusCode === 401 || statusCode === 422) {
-            const refreshToken = store.state.auth.refreshToken;
+            const refreshToken = store.state.refreshToken;
             if (error.response.data.errorCode === 'JWT_TOKEN_EXPIRED' && refreshToken) {
                 if (Object.prototype.hasOwnProperty.call(error.config, 'retryAttempts')) {
                     store.commit('api/token/logout');
