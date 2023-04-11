@@ -1,20 +1,7 @@
-<script src="../../utils/form_validator/index.js"></script>
 <template>
  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
+  <div class="max-w-md w-full space-y-10">
       <div class="flex flex-wrap items-center justify-center">
-        <svg
-          class="fill-current h-8 w-8 mr-2"
-          width="54"
-          height="54"
-          viewBox="0 0 54 54"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"
-          />
-        </svg>
-        <span class="font-semibold default-font inline-block text-xl">Wireless Hotspots </span>
         <div class="pt-5 w-full default-font text-xxl font-semibold text-center">
           Welcome Back
         </div>
@@ -50,20 +37,17 @@
         >
         <InputValidation :error-text="formValidator.getError('password')" />
            </div>
-        <Button
-          :title="'Sign in'"
-          :button-class="'authenticationButtonClass group relative w-full my-4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'"
-          :button-title-class="'text-center '"
-          @click="login()"
-        />
-        <div class="text-center text-lg default-font ">
+          <div class="text-center text-lg">
           <Button
-            :title="'Forgot Password ?'"
-            :button-class="' border-none font-semibold  hover:bg-indigo-200'"
-            :button-title-class="'secondary-button pl-2 default-font text-blue-600'"
-            @click="$router.push('/email-identification')"
-          />
-          <span class="block  pt-3">New to Wireless Hotspot?  <Button
+                      :title="'Log In'"
+                      :button-class="'my-4 items-center bg-white hover:bg-purple-500 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'"
+                      :button-title-class="'align-center'"
+                      @click="login()"
+        />
+            </div>
+        <div class="text-center text-lg default-font ">
+          <span class="block  pt-3">New to Wireless Hotspot?
+            <Button
             :title="'Register'"
             :button-class="' border-none font-semibold  hover:text-gray-500'"
             :button-title-class="'secondary-button pl-2 default-font text-blue-600'"
@@ -83,13 +67,14 @@ import Button from '@/components/Common/Button.vue'
 import InputValidation from '@/components/Common/InputValidation.vue'
 // import ImageField from '@/components/ImageField'
 // import FormValidator from '~/utils/form_validator/index.js'
-import FormValidator from '../../utils/form_validator/index.js'
+import FormValidator from '~/utils/form_validator/index.js'
 export default {
   name: "LoginUser",
    components: {
      Button,
      InputValidation
    },
+
   data () {
     return {
       password: '',
@@ -99,54 +84,17 @@ export default {
     }
   },
   methods: {
-
-     login(){
+     async login(){
       console.log(this.email)
-       this.$store.dispatch('login', {
+       await this.$store.dispatch('login', {
         email: this.email,
         password: this.password
       })
+       if(this.$store.state.user.is_staff){
+        this.$router.push('/select-location')
+
+       }
     },
-    // login1(){
-    //
-    // },
-    //  login () {
-    //   const dataToPost = {
-    //     email: this.email,
-    //     password: this.password
-    //   }
-    //   this.$store.dispatch('')
-    //  this.$auth
-    //     .loginWith('local', { data: dataToPost })
-    //     .then((response) => {
-    //
-    //       console.log(response)
-    //       this.$router.push('/home')
-    //       // if (res.data.user.registration_stage === 'stage-3') {
-    //       //   this.$store.dispatch('showSnackbar', { text: `Hi ${res.data.user.full_name} !  Welcome to Bizevent`, class: 'bg-blue-500 text-white' })
-    //       //   this.$route.push('/')
-    //       // } else if (res.data.user.registration_stage === 'stage-2') {
-    //       //   this.sendEmail()
-    //       //
-    //       //   this.$store.dispatch('showSnackbar', { text: 'Please verify your email address.', class: 'bg-blue-500 text-white' })
-    //       // } else {
-    //       //   this.$router.push({
-    //       //     name: 'register-full-name',
-    //       //     params: { email: res.data.user.email }
-    //       //   })
-    //       //
-    //       // }
-    //     })
-    //     .catch((error) => {
-    //       this.formValidator.setError(error.response.data)
-    //       // this.$store.dispatch('showSnackbar', { text: `${error.response.data.non_field_errors}. Please make sure your email or password is correct`, class: 'bg-red-500 text-white' })
-    //
-    //       // this.setNotifyMessage({
-    //       //   message: 'Username or Password doesnot match.',
-    //       //   color: 'red',
-    //       // })
-    //     })
-    // },
   }
 }
 </script>

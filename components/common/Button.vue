@@ -1,10 +1,11 @@
 <template>
   <button
+    type="button"
     :class="[buttonClass]"
     class="focus:outline-none"
     @click="$emit('click')"
   >
-    <slot name="buttonContent">
+    <slot name="button-content">
       <span v-if="beforeIcon" :class="[buttonTitleClass]">{{ title }}</span>
       <IconBase v-if="icon" :class-prop="iconClass" :path="icon" :view-box-value="iconViewBox" />
       <span v-if="!beforeIcon" :class="[buttonTitleClass]">{{ title }}</span>

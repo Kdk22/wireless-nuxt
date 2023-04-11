@@ -1,7 +1,18 @@
 <template>
-  <div class="">
-    <nuxt />
+  <div class="flex flex-col h-screen">
+    <div  class="flex flex-1 overflow-hidden">
+      <nav-bar v-if="showSideBar" ></nav-bar>
+      <div class="flex flex-1 flex-col">
+    <Header
+      @sidebar="showSideBar = !showSideBar"
+    />
+    <div class="flex flex-1 bg-blue-300 overflow-y-auto ">
+    <Nuxt />
+      </div>
+        </div>
+
     <Footer />
+  </div>
     <transition name="snackbar">
       <div v-if="$store.state.snackBar.display" class="snackbar">
         <div class="flex p-3" :class="$store.state.snackBar.class">
@@ -17,19 +28,29 @@
         </div>
       </div>
     </transition>
+
   </div>
 </template>
 <script>
 import {
   uniTimesCircle
 } from '@/icons'
-import IconBase from '~/components/Common/IconBase.vue'
+import IconBase from '~/components/Common/IconBase.vue';
+import Header from "~/components/EventFeed/Header.vue";
+import Footer from "@/components/Common/Footer.vue";
+import NavBar from "@/components/common/NavBar.vue";
 export default {
   icons: {
     uniTimesCircle
   },
   components: {
-    IconBase
+    NavBar,
+    IconBase, Header, Footer
+  },
+  data(){
+    return {
+      showSideBar: false,
+    }
   }
 }
 </script>

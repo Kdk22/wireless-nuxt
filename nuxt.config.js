@@ -1,3 +1,4 @@
+import { join } from 'path'
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -147,5 +148,16 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: {
+     postcss: {
+      postcssOptions: {
+        plugins: {
+          tailwindcss: join(__dirname, 'tailwind.config.js'),
+          'postcss-pxtorem': {
+            propList: ['*', '!border*']
+          }
+        }
+      }
+    }
+  },
 }

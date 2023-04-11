@@ -1,4 +1,3 @@
-// import login from "~/pages/login/index.vue";
 
 export default class FormFieldErrors {
   constructor () {

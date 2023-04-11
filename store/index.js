@@ -9,7 +9,10 @@ export const state = () => ({
 
   // for authentication
     accessToken: null,
-    refreshToken: null
+    refreshToken: null,
+
+  // branch details
+  locationDetails : {},
 })
 // for authentication
 export const getters = {
@@ -38,11 +41,9 @@ export const mutations = {
     setUser(state, user) {
         state.user = user;
     },
-    logout(state) {
-        state.accessToken = null;
-        state.refreshToken = null;
-        state.user = null;
-    }
+  setLocation(state, location){
+    state.locationDetails = location;
+  }
 }
 
 export const actions = {
@@ -61,13 +62,25 @@ export const actions = {
   // for authentication
 
       async login({ commit, dispatch }, { email, password }) {
-        const res = await this.$axios.$post('api/token/', {
+         await this.$axios.$post('api/token/', {
             email,
             password
+        }).then((response) => {
+        commit('setTokens', response);
+        // this.showSnackbar()
+          dispatch('showSnackbar', { text: 'Successfully LoggedIn !', class: 'bg-blue-500 text-white' })
+            dispatch('getUser');
+
+        })
+         .catch((error) => {
+           console.log('Here is error in login', error)
+           dispatch('showSnackbar', { text: 'Could not log in !', class: 'bg-red-500 text-white' })
+
         });
 
-        commit('setTokens', res);
-        await dispatch('getUser');
+        // commit('setTokens', res);
+
+
     },
 
    async getUser({ commit }) {
@@ -81,5 +94,11 @@ export const actions = {
         });
 
         commit('setTokens', res);
+    }
+    ,
+    logout({state, dispatch}) {
+        state.accessToken = null;
+        state.refreshToken = null;
+        state.user = null;
     }
 }
