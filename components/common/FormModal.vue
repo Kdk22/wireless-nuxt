@@ -20,28 +20,28 @@
 				</div>
 				<!--Body-->
 				    <slot name="form-content" class="my-5">
-
+<div class="font-medium text-base">{{modalContent}}</div>
             </slot>
 				<!--Footer-->
 				<div class="flex justify-end border-t-2 space-x-2 pt-2">
           <Button
 					:title="'Cancel'"
-                      :button-class="'my-4 items-center bg-white hover:bg-purple-500 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'"
+                      :button-class="'my-4 items-center bg-white hover:bg-red-500 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'"
                       :button-title-class="'align-center'"
                       @click="$emit('close')">
 
           </Button>
           <Button
-          :title="'Save'"
+          :title="actionName"
                       :button-class="'my-4 items-center bg-white hover:bg-purple-500 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'"
                       :button-title-class="'align-center'"
-                      @click="$emit('save')"
+                      @click="$emit('confirm')"
           >
 
           </Button>
 
 					<button
-						class="focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white hover:bg-teal-400">Confirm</button>
+						class="focus:outline-none px-4 bg-teal-500 p-3 ml-3 rounded-lg text-white hover:bg-teal-400">{{actionName}}</button>
 				</div>
 			</div>
 		</div>
@@ -58,15 +58,20 @@ export default {
   components: {Button, IconBase},
   icons: {mdiClose},
     props: {
+    modalContent: {
+      type: String,
+      required: false,
+      default: 'Modal Content'
+    },
     modalTitle: {
       type: String,
       required: false,
       default: 'Modal Title Name'
     },
-      itemDetails: {
-      type: Object,
+      actionName: {
+      type: String,
         required: false,
-        default: null
+        default: 'Save'
       }
 
   },

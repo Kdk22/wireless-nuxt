@@ -2,19 +2,53 @@
 <div class=" pt-16 pb-32 content-center ">
 
         <div class="container mx-auto px-4 overflow-x-auto">
-          <span>
+          <div class="flex flex-row justify-between">
+            <div class="">
+            <span > Phone Number</span>
+     <form>
+                      <input @keyup.enter="getData" v-model="filter.phoneNumber" type="text" placeholder="Search" class=" placeholder:italic placeholder-slate-400 rounded mt-1 px-2 border border-slate-600  h-10    contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+<!--front end validation for search-->
+          </form>
+            </div>
+            <div class="mx-4">
+                  <span> First Name</span>
+     <form>
+                      <input @keyup.enter="getData" v-model="filter.firstName" type="text" placeholder="Search" class=" placeholder:italic mt-1 placeholder-slate-400 pl-2  h-10  border border-slate-600 rounded contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+<!--set up error validation for search-->
+          </form>
+            </div>
+            <div class="">
+                  <span> Last Name</span>
+     <form>
+                      <input @keyup.enter="getData" v-model="filter.lastName" type="text" placeholder="Search" class=" placeholder:italic mt-1 placeholder-slate-400 h-10 border border-slate-600 rounded pl-2 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+<!--set up validation for search-->
+          </form>
+
+              </div>
+                <Button
+          :button-class="'cursor-pointer mt-6'"
+          @click="getData"
+        >
+          <template #button-content>
+           <IconBase :class-prop="'h-8 w-5 hover:text-purple-500'" :path="$options.icons.uniSearch" :view-box-value="'0,0,24,28'"    />
+          </template>
+ </Button>
+
+<div class="w-70 hidden">Date Picker </div>
+
          <Button
             :title="'Add New'"
-                       :button-class="'my-4 items-center bg-white hover:bg-purple-500 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'"
+                       :button-class="'my-4 rounded  bg-white hover:bg-purple-500 text-gray-800 font-semibold py-2 px-4 border border-gray-400  shadow'"
                       :button-title-class="'align-center'"
             @click="showForm = !showForm"
          >
 </Button>
-            </span>
+
+            </div>
 <!--          <div v-if="showForm" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] md:h-full">-->
 <!--    <div class="relative w-full h-full max-w-2xl md:h-auto">-->
 <!--        &lt;!&ndash; Modal content &ndash;&gt;-->
-<!--        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">-->
+<!--        <div class="relative bg-white -lg shadow dark:bg-gray-700">-->
 <!--            &lt;!&ndash; Modal header &ndash;&gt;-->
 <!--<ActivationTrackerForm ></ActivationTrackerForm>-->
 <!--        </div>-->
@@ -56,8 +90,8 @@
          </th>
     </tr>
   </thead>
-  <tbody>
-    <tr v-for="(item, index) in activationList" :key="item.id" class="space-x-8 space-y-1 text-center text-sm">
+  <tbody v-if="!loading">
+    <tr v-for="(item, index) in activationList" :key="item.id" class=" space-x-8 space-y-1 text-center text-sm">
       <td>{{index +1}}</td>
 
       <td class=""> {{dayjs(item.modified_at).format('ddd DD, MMMM, YYYY | HH:MM A')}}</td>
@@ -71,13 +105,44 @@
       <td>{{item.email}}</td>
 
       <td class="flex text-center">
-          <IconBase :class-prop="'h-7 w-7 pr-2 mouse-pointer  hover:text-purple-500'" :path="$options.icons.mdiEdit" :view-box-value="'0,0,24,28'"    />
+          <Button
+          :button-class="'cursor-pointer '"
+          @click="edit(item)"
+        >
+          <template #button-content>
+                   <IconBase :class-prop="'h-7 w-7 pr-2 mouse-pointer  hover:text-purple-500'" :path="$options.icons.mdiEdit" :view-box-value="'0,0,24,28'"    />
 
+          </template>
+
+        </Button>
+ <Button
+          :button-class="'cursor-pointer '"
+          @click="deleteModal(item)"
+        >
+          <template #button-content>
            <IconBase :class-prop="'h-7 w-7 hover:text-red-500'" :path="$options.icons.mdiDelete" :view-box-value="'0,0,24,28'"    />
+          </template>
+ </Button>
      </td>
     </tr>
 
   </tbody>
+          <tbody v-else>
+          <tr v-for="index in 20" :key="index" class="animate-pulse space-y-5">
+  <td class=" bg-gray-400 h-5 px-12"></td>
+  <td class=" bg-gray-500 h-5 px-12"></td>
+  <td class=" bg-gray-400 h-5 px-12  "></td>
+  <td class=" bg-gray-500 h-5 px-12 "></td>
+  <td class=" bg-gray-400 h-5 px-12 "></td>
+  <td class=" bg-gray-500 h-5 px-12 "></td>
+  <td class=" bg-gray-400 h-5 px-12 "></td>
+  <td class=" bg-gray-500 h-5 px-12 "></td>
+  <td class=" bg-gray-400 h-5 px-12 "></td>
+  <td class=" bg-gray-500 h-5 px-12 "></td>
+  <td class=" bg-gray-400 h-5 px-12 "></td>
+
+            </tr>
+          </tbody>
 </table>
 
         </div>
@@ -93,15 +158,16 @@
 
   <FormModal
     :modal-title="'Activation Tracker'"
+    :action-name="formData.id ? 'Update': 'Save'"
   @close="closeFormModal"
-    @save="postData"
+    @confirm="postData"
   >
     <template #form-content>
     <div class="flex my-6 mx-4">
   <div class="flex-1">
     <span> First Name</span>
      <form>
-            <input v-model="formData.first_name" class="border-slate-200 bg-gray-400 my-1  p-2 w-11/12 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+            <input v-model="formData.first_name" type="text" class="border-slate-200 bg-gray-400 my-1  p-2 w-11/12 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
               <InputValidation :error-text="formValidator.getError('first_name')" />
 
           </form>
@@ -110,7 +176,7 @@
    <div class="flex-1">
     <span> Last Name</span>
      <form>
-            <input v-model="formData.last_name" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+            <input v-model="formData.last_name" type="text" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
               <InputValidation :error-text="formValidator.getError('last_name')" />
 
           </form>
@@ -121,7 +187,7 @@
    <div class="flex-1 ">
     <span class=""> Phone Number</span>
      <form>
-            <input v-model="formData.phone_number" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+            <input v-model="formData.phone_number" type="number" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
               <InputValidation :error-text="formValidator.getError('phone_number')" />
 
           </form>
@@ -130,7 +196,7 @@
                  <div class="flex-1">
     <span> Account Number</span>
      <form>
-            <input v-model="formData.account_number" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+            <input v-model="formData.account_number" type="number" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
               <InputValidation :error-text="formValidator.getError('account_number')" />
 
           </form>
@@ -143,7 +209,7 @@
    <div class="flex-1">
     <span class="">Ported Number</span>
      <form>
-            <input v-model="formData.ported_number" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+            <input v-model="formData.ported_number" type="number" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
               <InputValidation :error-text="formValidator.getError('ported_number')" />
 
           </form>
@@ -152,7 +218,7 @@
                  <div class="flex-1">
     <span>Email</span>
      <form>
-            <input v-model="formData.email" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
+            <input v-model="formData.email" type="email" class="border-slate-200 bg-gray-400 my-1 p-2 w-11/12 placeholder-slate-800 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>
               <InputValidation :error-text="formValidator.getError('email')" />
 
           </form>
@@ -233,6 +299,7 @@
               <InputValidation :error-text="formValidator.getError('auto_payment')" />
             </div>
 <!--            <input v-model="formData.plan" class="border-slate-200 placeholder-slate-400 contrast-more:border-slate-400 contrast-more:placeholder-slate-500"/>-->
+                      <InputValidation :error-text="formValidator.getError('generalError')"></InputValidation>
           </form>
 
   </div>
@@ -244,6 +311,16 @@
   </FormModal>
 </div>
 
+  <div class=" fixed w-full h-100 inset-0 z-50 overflow-hidden flex justify-center items-center animated fadeIn faster" v-if="deleteForm">
+<FormModal
+  :modal-content="`Are you sure you want to delete user ${formData.first_name}  ${formData.last_name} ?`"
+  :action-name="'Confirm'"
+  @close="deleteForm = !deleteForm , formData = {}"
+  @confirm="deleteItem"
+:modal-title="'Delete'">
+
+</FormModal>
+  </div>
 </div>
 
 </template>
@@ -255,7 +332,7 @@
   import Button from "@/components/common/Button.vue";
   import FormValidator from '~/utils/form_validator/index.js'
   import FormModal from "@/components/common/FormModal.vue";
-  import {mdiEdit, mdiDelete} from "@/icons";
+  import {mdiEdit, mdiDelete, uniSearch} from "@/icons";
   import IconBase from "@/components/common/IconBase.vue";
 
   // import FormModal from "@/components/common/FormModal.vue";
@@ -266,12 +343,22 @@ export default {
 
   data(){
     return {
+      deleteForm:false,
       selectedValue: '',
       showForm: false,
-      activationList: {},
+      activationList: [],
       formData: {
+        first_name: '',
+        last_name :'',
+        ported_number: '',
+        phone_number: '',
+        account_number: '',
+        email: '',
+        plan: null,
+        auto_payment: null
 
       },
+      loading: false,
       selectedPlan: 'Select',
       selectedAutoPay: 'Select',
       dropDownPlan: false,
@@ -288,6 +375,12 @@ export default {
           value: 'False'
         }
         ],
+      filter: {
+        firstName: '',
+        lastName: '',
+        phoneNumber: ''
+
+      }
     }
   },
   computed: {
@@ -295,7 +388,7 @@ export default {
       return dayjs
     }
   },
-  icons: {mdiEdit, mdiDelete},
+  icons: {mdiEdit, mdiDelete, uniSearch},
     mounted() {
      this.getData();
 
@@ -322,7 +415,36 @@ export default {
           // })
         })
     },
-    saveData(){},
+    edit(item){
+      this.formData =item
+      this.showForm = true
+      this.selectedPlan = item.plan_name
+      this.selectedAutoPay = item.auto_payment === true ? 'Yes': 'No'
+    },
+    deleteModal(item){
+      this.deleteForm = true
+      this.formData = item
+    },
+    deleteItem(){
+      this.$axios
+        .$delete(`activation/${this.formData.id}/`)
+        .then(() => {
+            this.$store.dispatch('showSnackbar', {
+              text: 'Activation Successfully Deleted !',
+              class: 'bg-purple-500 text-white'
+            })
+          this.getData()
+         this.closeFormModal()
+        })
+        .catch((error) => {
+          console.log(error)
+            this.$store.dispatch('showSnackbar', {
+              text: 'Activation Cannot be Deleted !',
+              class: 'bg-red-500 text-white'
+            })
+        })
+
+    },
     selectedPlanElement (item) {
       console.log(item)
       this.formData.plan = item.id
@@ -343,9 +465,22 @@ export default {
       this.selectedAutoPay = 'Select'
       this.selectedPlan = 'Select'
       this.showForm = false
+      this.deleteForm = false
+      this.errors = {}
+       this.filter= {
+        firstName: '',
+        lastName: '',
+        phoneNumber: ''
+
+      }
     },
 getData () {
-      this.$axios.get(`activation/`)
+      this.loading = true
+  let geturl =`activation/`
+  if(this.filter.firstName || this.filter.lastName || this.filter.phoneNumber){
+    geturl = geturl + `?phone_number=${this.filter.phoneNumber}&first_name=${this.filter.firstName}&last_name=${this.filter.lastName}`
+  }
+      this.$axios.get(geturl)
         .then((response) => {
           // this.setNotifyMessage({
           //   message: 'Successfully Login. Enjoy Shopping.',
@@ -354,6 +489,7 @@ getData () {
           console.log('data posted', response)
           // this.$router.push('/')
           this.activationList = response.data
+          this.loading = false
         })
         .catch((error) => {
           console.log(error)
@@ -363,36 +499,65 @@ getData () {
           // })
         })
     },
-    postData(){
-      this.formData.branch = 1
-      this.formData.user = 1
-      console.log(this.formData);
-      this.$axios
-        .$post('activation/', this.formData)
-        .then((response) => {
-          this.activationList.unshift(response)
+    postData() {
+      console.log(this.formData)
+      if (!this.formData.id) {
 
-          // if(response.registration_stage )
-          // this.setNotifyMessage({
-          //   message: 'Successfully Login. Enjoy Shopping.',
-          //   color: 'green',
-          // })
-          // this.$store.dispatch('registration/addUserRegistrationDetails', response)
-           this.$store.dispatch('showSnackbar', { text: 'New Activation Successfully Added !', class: 'bg-purple-500 text-white' })
-          // this.sendEmail()
-          console.log(response)
-          this.closeFormModal()
-          // this.$router.push('/requested')
-          // this.$router.push('/')
-        })
-        .catch((error) => {
-          console.log(error)
-          this.formValidator.setError(error.response)
-          this.$store.dispatch({
+        this.formData.branch = 1
+        this.formData.user = 1
+        console.log(this.formData);
+        this.$axios
+          .$post('activation/', this.formData)
+          .then((response) => {
+            this.activationList.unshift(response)
+
+            // if(response.registration_stage )
+            // this.setNotifyMessage({
+            //   message: 'Successfully Login. Enjoy Shopping.',
+            //   color: 'green',
+            // })
+            // this.$store.dispatch('registration/addUserRegistrationDetails', response)
+            this.$store.dispatch('showSnackbar', {
+              text: 'New Activation Successfully Added !',
+              class: 'bg-purple-500 text-white'
+            })
+            // this.sendEmail()
+            console.log(response)
+            this.closeFormModal()
+            // this.$router.push('/requested')
+            // this.$router.push('/')
+          })
+          .catch((error) => {
+            console.log(error)
+            this.formValidator.setError(error.response)
+        this.formValidator.setError({ generalError: ['Please fill up the information'] })
+
+            this.$store.dispatch({
               message: 'New Activation Cannon be Added.',
               color: 'red',
             })
-        })
+          })
+
+      } else {
+        this.$axios.$put(`activation/${this.formData.id}/`, this.formData)
+          .then(() => {
+            this.showForm = false
+            this.getData()
+            this.formData = {}
+            this.$store.dispatch('showSnackbar', {
+              text: 'Activation Successfully Updated !',
+              class: 'bg-purple-500 text-white'
+            })
+          })
+          .catch((error) => {
+            this.$store.dispatch('showSnackbar', {
+              text: 'Activation Cannot be Created !',
+              class: 'bg-red-500 text-white'
+            })
+            console.log(error)
+            this.formValidator.setError(error)
+          })
+      }
     }
 
   }
