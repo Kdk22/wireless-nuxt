@@ -6,7 +6,7 @@
     <Header
       @sidebar="showSideBar = !showSideBar"
     />
-    <div class="flex flex-1 overflow-y-auto ">
+    <div class=" items-center justify-center m-8 overflow-y-auto ">
     <Nuxt />
       </div>
         </div>

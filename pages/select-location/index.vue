@@ -44,6 +44,7 @@
   import Button from "@/components/common/Button.vue";
 export default {
   name: "index",
+  layout:"registration",
   components: {DropDown, InputValidation, Button},
   data() {
     return {

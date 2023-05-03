@@ -2,9 +2,9 @@
 
     <nav class="flex bg-gray-300 h-20 py-4">
 
-      <div class="w-20">
+      <div v-if="$store.state.user" class="w-20">
         <Button
-          :button-class="'hover:bg-purple-500 cursor-pointer '"
+          :button-class="'hover:bg-purple-500 cursor-pointer mx-2 md:mx-8 lg:mx-10'"
           @click="$emit('sidebar')"
         >
           <template v-slot:button-content>
@@ -13,7 +13,7 @@
           </template>
         </Button>
       </div>
-      <div class="flex  flex-shrink-0 text-black mr-6">
+      <div class="flex  flex-shrink-0 text-black mx-6">
         <svg
           class="fill-current h-8 w-8 mr-2"
           width="54"

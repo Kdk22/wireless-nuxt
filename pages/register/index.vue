@@ -113,6 +113,7 @@ import InputValidation from '@/components/Common/InputValidation.vue'
 import FormValidator from '@/utils/form_validator/index.js'
 export default {
   name: "RegisterUser",
+  layout:"registration",
   components: {
      Button,
      InputValidation
@@ -133,40 +134,24 @@ export default {
   mounted() {
     // this.getData();
   },
-  methods: {
-    getData () {
-      this.$axios.get(`location/`)
-        .then((response) => {
-          // this.setNotifyMessage({
-          //   message: 'Successfully Login. Enjoy Shopping.',
-          //   color: 'green',
-          // })
-          console.log('data posted', response)
-          // this.$router.push('/')
-          this.postDetails = response.data
-        })
-        .catch((error) => {
-          console.log(error)
-          // this.setNotifyMessage({
-          //   message: 'Username or Password doesnot match.',
-          //   color: 'red',
-          // })
-        })
-    },
 
-    postData() {
+  methods: {
+
+    register() {
       if (this.formData.password === this.confirmPassword && this.formData.password ) {
 console.log("Here in post data")
         this.$axios
           .$post('/detail/', this.formData)
           .then((response) => {
-            // this.setNotifyMessage({
-            //   message: 'Successfully Login. Enjoy Shopping.',
-            //   color: 'green',
-            // })
+            this.$store.dispatch('showSnackbar', {
+              text: 'Registration request is successfully sent !',
+              class: 'bg-purple-500 text-white'
+            })
+            this.$store.commit('setUser', response);
             console.log('data posted', response)
-            this.$router.push('/requested')
-            this.postDetails = response.data
+            this.$router.push('/verify-email')
+            this.verify()
+            this.loginDetails = response.data
 
           })
           .catch((error) => {
@@ -180,9 +165,13 @@ console.log("Here in post data")
         this.formValidator.setError({confirmPassword: 'Did not match or must be more that 8 characters.'})
       }
       },
-    register () {
+
+        verify() {
+      this.formData= {
+        email: this.$store.state.user.email
+      }
       this.$axios
-        .$post('users-detail/', this.formData)
+        .$post('/detail/verify_email/', this.formData)
         .then((response) => {
           // if(response.registration_stage )
           // this.setNotifyMessage({
@@ -193,18 +182,50 @@ console.log("Here in post data")
           // this.$store.dispatch('showSnackbar', { text: 'Successfully Registered ! Please login !', class: 'bg-blue-500 text-white' })
           // this.sendEmail()
           console.log(response)
-          this.$router.push('/requested')
+          // this.$router.push('/select-location')
           // this.$router.push('/')
+          this.$store.dispatch('showSnackbar', {
+              text: 'Verification code is successfully sent  to your email!',
+              class: 'bg-purple-500 text-white'
+            })
         })
         .catch((error) => {
           console.log(error)
           this.formValidator.setError(error.response)
           this.setNotifyMessage({
-              message: 'Username or Password doesnot match.',
-              color: 'red',
-            })
+            message: 'Email cannot be sent.',
+            color: 'red',
+          })
         })
-    }
+
+
+
+}
+    // register () {
+    //   this.$axios
+    //     .$post('users-detail/', this.formData)
+    //     .then((response) => {
+    //       // if(response.registration_stage )
+    //       // this.setNotifyMessage({
+    //       //   message: 'Successfully Login. Enjoy Shopping.',
+    //       //   color: 'green',
+    //       // })
+    //       // this.$store.dispatch('registration/addUserRegistrationDetails', response)
+    //       // this.$store.dispatch('showSnackbar', { text: 'Successfully Registered ! Please login !', class: 'bg-blue-500 text-white' })
+    //       // this.sendEmail()
+    //       console.log(response)
+    //       this.$router.push('/verify-email')
+    //       // this.$router.push('/')
+    //     })
+    //     .catch((error) => {
+    //       console.log(error)
+    //       this.formValidator.setError(error.response)
+    //       this.setNotifyMessage({
+    //           message: 'Username or Password doesnot match.',
+    //           color: 'red',
+    //         })
+    //     })
+    // }
   }
 
 }

@@ -70,6 +70,7 @@ import InputValidation from '@/components/Common/InputValidation.vue'
 import FormValidator from '~/utils/form_validator/index.js'
 export default {
   name: "LoginUser",
+  layout:"registration",
    components: {
      Button,
      InputValidation
@@ -90,9 +91,17 @@ export default {
         email: this.email,
         password: this.password
       })
-       if(this.$store.state.user.is_staff){
+
+       if(this.$store.state.user.registration_stage === 'stage-2'){
+        this.$router.push('/verify-email')
+
+       }
+       else if ( this.$store.state.user.registration_stage === 'stage-3' && this.$store.state.user.active){
         this.$router.push('/select-location')
 
+       }
+       else {
+         this.$router.push('/register')
        }
     },
   }

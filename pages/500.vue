@@ -13,7 +13,8 @@
 
 <script>
 export default {
-  name: "500"
+  name: "500",
+  layout:"registration",
 }
 </script>
 

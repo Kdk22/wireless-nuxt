@@ -1,7 +1,7 @@
 <template>
-<div class=" pt-16 pb-32 content-center ">
-
-        <div class="container mx-auto px-4 overflow-x-auto">
+<div class="pb-32 content-center ">
+          <h2 class="text-4xl text-center py-4">Activation Tracker</h2>
+        <div class="container mx-auto px-6 overflow-x-auto">
           <div class="flex flex-row justify-between">
             <div class="">
             <span > Phone Number</span>
@@ -54,7 +54,7 @@
 <!--        </div>-->
 <!--    </div>-->
 <!--</div>-->
-<!--{{activationList}}-->
+<!--{{userList}}-->
          <div class="flex flex-col overflow-x-auto">
   <div class="sm:-mx-6 lg:-mx-8">
     <div class="inline-block min-w-full py-2 sm:px-6 lg:px-8">
