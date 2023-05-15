@@ -1,19 +1,7 @@
 <template>
  <div class="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-md w-full space-y-8">
+  <div class="max-w-md w-full space-y-10">
       <div class="flex flex-wrap items-center justify-center">
-        <svg
-          class="fill-current h-8 w-8 mr-2"
-          width="54"
-          height="54"
-          viewBox="0 0 54 54"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"
-          />
-        </svg>
-        <span class="font-semibold default-font inline-block text-xl">Wireless Hotspots </span>
         <div class="pt-5 w-full default-font text-xxl font-semibold text-center">
           Welcome Back
         </div>
@@ -45,28 +33,34 @@
           class="authentication-field-class  "
           type="password"
           placeholder="Password"
-          @keyup.enter="login"
+          @keyup.enter="login()"
         >
         <InputValidation :error-text="formValidator.getError('password')" />
            </div>
-        <Button
-          :title="'Sign in'"
-          :button-class="'authenticationButtonClass group relative w-full my-4 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'"
-          :button-title-class="'text-center '"
-          @click="login"
-        />
-        <div class="text-center text-lg default-font ">
+          <div class="text-center text-lg">
           <Button
-            :title="'Forgot Password ?'"
-            :button-class="' border-none font-semibold  hover:bg-indigo-200'"
+                      :title="'Log In'"
+                      :button-class="'my-4 items-center bg-white hover:bg-purple-500 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow'"
+                      :button-title-class="'align-center'"
+                      @click="login()"
+        />
+            </div>
+          <div class="text-center text-lg default-font ">
+<span class="block  pt-1">Forgot Password?
+          <Button
+            :title="'Forgot Password'"
+            :button-class="' border-none font-semibold  hover:text-gray-500'"
             :button-title-class="'secondary-button pl-2 default-font text-blue-600'"
-            @click="$router.push('/email-identification')"
-          />
-          <span class="block  pt-3">New to Wireless Hotspot?  <Button
+            @click="$router.push('forgot-password')"
+          /></span>
+          </div>
+        <div class="text-center text-lg default-font ">
+          <span class="block  pt-3">New to Wireless Hotspot?
+            <Button
             :title="'Register'"
             :button-class="' border-none font-semibold  hover:text-gray-500'"
             :button-title-class="'secondary-button pl-2 default-font text-blue-600'"
-            @click="$router.push('/register')"
+            @click="$router.push('register')"
           /></span>
         </div>
       </div>
@@ -81,14 +75,15 @@ import Button from '@/components/Common/Button.vue'
 // import IconBase from './IconBase'
 import InputValidation from '@/components/Common/InputValidation.vue'
 // import ImageField from '@/components/ImageField'
-import FormValidator from '@/utils/form_validator/index.js'
-
+// import FormValidator from '~/utils/form_validator/index.js'
+import FormValidator from '~/utils/form_validator/index.js'
 export default {
-  name: "IndexPage",
+  name: "LoginUser",
    components: {
      Button,
      InputValidation
    },
+
   data () {
     return {
       password: '',
@@ -97,7 +92,54 @@ export default {
 
     }
   },
-  methods: {}
+  methods: {
+
+
+     async login(){
+       const self = this
+      console.log(this.email)
+       await self.$store.dispatch('login', {
+        email: self.email,
+        password: self.password
+      })
+if(self.$store.state.user) {
+  if (self.$store.state.user.registration_stage === 'stage-2') {
+    self.verify()
+
+  } else if (self.$store.state.user.registration_stage === 'stage-3' && self.$store.state.user.active) {
+    self.$router.push('/select-location')
+
+  } else {
+    self.$router.push('/register')
+  }
+}
+    },
+
+    verify() {
+    this.$axios
+    .$post('/detail/verify_email/', {email: this.email})
+    .then((response) => {
+      // if(response.registration_stage )
+      // this.setNotifyMessage({
+      //   message: 'Successfully Login. Enjoy Shopping.',
+      //   color: 'green',
+      // })
+      // this.$store.dispatch('registration/addUserRegistrationDetails', response)
+       this.$store.dispatch('showSnackbar', { text: 'Please Verify !', class: 'bg-blue-500 text-white' })
+      // this.sendEmail()
+
+      console.log(response)
+          this.$router.push('/verify-email')
+
+      // this.$router.push('/')
+    })
+    .catch((error) => {
+      console.log(error)
+      this.formValidator.setError(error.response)
+    })
+
+},
+  }
 }
 </script>
 

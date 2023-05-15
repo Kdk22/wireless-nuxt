@@ -93,7 +93,7 @@ export default {
     selectHeadingTitle(item){
       if (item.action === 'logout'){
 
-        this.$router.push('/login')
+        this.$router.push('/')
       }
 
     }

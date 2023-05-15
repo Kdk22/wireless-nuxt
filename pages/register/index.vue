@@ -95,7 +95,7 @@
             :title="'Sign In'"
             :button-class="' border-none font-semibold  hover:text-gray-500'"
             :button-title-class="'secondary-button pl-2 default-font text-blue-600'"
-            @click="$router.push('/login')"
+            @click="$router.push({path: '/'})"
           /></span>
         </div>
       </div>

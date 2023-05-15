@@ -61,30 +61,26 @@ export const actions = {
 
   // for authentication
 
-      async login({ commit, dispatch }, { email, password }) {
-         await this.$axios.$post('api/token/', {
-            email,
-            password
-        }).then((response) => {
-        commit('setTokens', response);
-        // this.showSnackbar()
-          dispatch('showSnackbar', { text: 'Successfully LoggedIn !', class: 'bg-blue-500 text-white' })
-            dispatch('getUser');
+  async login({ commit, dispatch }, { email, password }) {
+     await this.$axios.$post('api/token/', {
+        email,
+        password
+    }).then((response) => {
+    commit('setTokens', response);
+    // this.showSnackbar()
+      dispatch('showSnackbar', { text: 'Successfully LoggedIn !', class: 'bg-blue-500 text-white' })
+        dispatch('getUser');
+    })
+     .catch((error) => {
+       console.log('Here is error in login', error)
+       dispatch('showSnackbar', { text: 'Could not log in !', class: 'bg-red-500 text-white' })
+    });
+    // commit('setTokens', res);
 
-        })
-         .catch((error) => {
-           console.log('Here is error in login', error)
-           dispatch('showSnackbar', { text: 'Could not log in !', class: 'bg-red-500 text-white' })
-
-        });
-
-        // commit('setTokens', res);
-
-
-    },
+  },
 
    async getUser({ commit }) {
-        const res = await this.$axios.$get('users-detail/me/');
+        const res = await this.$axios.$get('detail/me');
 
         commit('setUser', res);
     },

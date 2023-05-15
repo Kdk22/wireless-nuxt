@@ -3,13 +3,16 @@
   <div class="max-w-md w-full space-y-10">
       <div class="flex flex-wrap items-center justify-center">
         <div class="pt-5 w-full default-font text-xxl font-semibold text-center">
-          Welcome Back
+          This page is not in use need to be deleted
+          This page is not in use need to be deleted
+          This page is not in use need to be deleted
+
         </div>
         <p class="default-font pb-6 text-lg text-center text-gray-600">
           Sign In to Continue
         </p>
       </div>
-      <div class="shadow-sm ">
+      <form class="shadow-sm ">
 
         <div>
 
@@ -51,11 +54,11 @@
             :title="'Register'"
             :button-class="' border-none font-semibold  hover:text-gray-500'"
             :button-title-class="'secondary-button pl-2 default-font text-blue-600'"
-            @click="$router.push('/register')"
+            @click="$router.push({path: `/register`})"
           /></span>
         </div>
       </div>
-    </div>
+    </form>
   </div>
 
 </div>
@@ -70,7 +73,6 @@ import InputValidation from '@/components/Common/InputValidation.vue'
 import FormValidator from '~/utils/form_validator/index.js'
 export default {
   name: "LoginUser",
-  layout:"registration",
    components: {
      Button,
      InputValidation
@@ -86,23 +88,23 @@ export default {
   },
   methods: {
      async login(){
-      console.log(this.email)
        await this.$store.dispatch('login', {
         email: this.email,
         password: this.password
       })
+       if(this.$store.state.user) {
 
-       if(this.$store.state.user.registration_stage === 'stage-2'){
-        this.$router.push('/verify-email')
+         if (this.$store.state.user.registration_stage === 'stage-2') {
+           this.$router.push('/verify-email')
 
-       }
-       else if ( this.$store.state.user.registration_stage === 'stage-3' && this.$store.state.user.active){
-        this.$router.push('/select-location')
+         } else if (this.$store.state.user.registration_stage === 'stage-3' && this.$store.state.user.active) {
+           this.$router.push('/select-location')
 
+         }
        }
        else {
-         this.$router.push('/register')
-       }
+           this.$router.push('/register')
+         }
     },
   }
 }

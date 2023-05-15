@@ -46,7 +46,7 @@ export default function({
             if (error.response.data.errorCode === 'JWT_TOKEN_EXPIRED' && refreshToken) {
                 if (Object.prototype.hasOwnProperty.call(error.config, 'retryAttempts')) {
                     store.commit('api/token/logout');
-                    return redirect('/login');
+                    return redirect('/');
                 }
                 const config = { retryAttempts: 1, ...error.config };
                 try {
@@ -54,12 +54,13 @@ export default function({
                     return Promise.resolve($axios(config));
                 } catch (e) {
                     store.commit('api/token/logout');
-                    return redirect('/login');
+                    return redirect('/');
                 }
             }
-
+     // Check this store logout is actually calling store method or not. I think refresh token method is not gone call, try commit insted of dispach,
+// and remove comment once this is tested
             store.commit('api/token/logout');
-            return redirect('/login');
+            return redirect('/');
         }
         if (statusCode === 500) {
           redirect('/500')
